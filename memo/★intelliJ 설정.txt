@@ -1,0 +1,26 @@
+▶ 초기 설정
+	메뉴바 > settings 누르고 검색해서 설정
+	Auto import
+		자동 임포트 옵션 활성화
+
+	File Encoding
+		3개 전부 UTF-8로 통일
+
+	Code Completion
+		대소문자 구분 여부 체크
+		체크를 하지 않앙 대소문자 구분하지 않음
+		제일 위에꺼 체크 해제
+
+
+	Annotation processor
+		주석 처리기 사용 활성화!
+
+	> 후에 apply 해주고 ok 누르기
+▶ 단축키
+	crtl + d: 한줄 복사
+	crtl + x: 한줄 삭제 및 잘라내기
+	shift + F6: 이름 변경 (변수, 메소드 등 변경 가능)
+	crtl + alt + l: 자동 줄 맞춤
+	crtl + shift + F: 검색
+	crtl + shift + R: 바꾸기
+	> shift가 붙으면 해당 프로젝트 안에 파일을 의미
