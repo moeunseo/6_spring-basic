@@ -19,7 +19,7 @@ public class ConnectionTest {
     public void testDataSource() {
         try {
             Connection conn = dataSource.getConnection();
-            log.info("datasource connection: "+ conn.toString());
+            log.info("datasource connection: " + conn.toString());
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
