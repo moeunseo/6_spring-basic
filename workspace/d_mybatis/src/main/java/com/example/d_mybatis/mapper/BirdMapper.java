@@ -18,4 +18,8 @@ public interface BirdMapper {
     List<BirdVO> selectAll();
 
     void insert(BirdVO vo);
+
+    void updateById(BirdVO vo);
+
+    void deleteById(int id);
 }
