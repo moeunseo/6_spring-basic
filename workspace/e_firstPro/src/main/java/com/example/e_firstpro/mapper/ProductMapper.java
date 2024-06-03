@@ -7,7 +7,7 @@ import java.util.List;
 
 @Mapper
 public interface ProductMapper {
-    ProductVO selectById(int id);
+    ProductVO selectById(Long id);
 
     List<ProductVO> selectAll();
 
@@ -15,5 +15,5 @@ public interface ProductMapper {
 
     void updateById(ProductVO productVO);
 
-    void deleteById(int id);
+    void deleteById(Long id);
 }

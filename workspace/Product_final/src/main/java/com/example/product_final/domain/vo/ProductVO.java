@@ -1,4 +1,4 @@
-package com.example.e_firstpro.domain.vo;
+package com.example.product_final.domain.vo;
 
 import lombok.*;
 import org.springframework.stereotype.Component;
@@ -6,7 +6,6 @@ import org.springframework.stereotype.Component;
 @Component
 @NoArgsConstructor
 @Getter
-@Setter
 @ToString
 public class ProductVO {
     private Long id;

@@ -27,9 +27,35 @@
             <if test="category != null">
                 AND category = #{category}
             </if>
-            <if test="price != null">
-                AND price >= #{price}
+            <if test="price != 0">
+                OR price >= #{price}
             </if>
         </where>
     </select>
+
+    <!-- 조건문들 중 하나라도 true가 뜬다면 그 문장 실행하고 외엔 실행되지 않는다.
+         쿼리문에 따라 <where>을 적고 안적고 발생! 상황에 따라 하면 된다.
+         현재 쿼리문에선 if - else if - else라고 생각!
+         부등호 &lt: < &gt: > -->
+    <select id="findByChoose" resultType="ProductVO">
+        select *from product
+        <where>
+            <choose>
+                <when test="name != null">name = #{name}</when>
+                <when test="category != null">category = #{category}</when>
+                <otherwise>price &lt; 1000 </otherwise>
+            </choose>
+        </where>
+    </select>
+
+    <update id="update">
+        update product
+        <set>
+            <if test="name != null">name = #{name},</if>
+            <if test="price != null">price = #{price},</if>
+            <if test="category != null">category = #{category},</if>
+            <if test="description != null">description = #{description}</if>
+        </set>
+        where id = #{id}
+    </update>
 </mapper>

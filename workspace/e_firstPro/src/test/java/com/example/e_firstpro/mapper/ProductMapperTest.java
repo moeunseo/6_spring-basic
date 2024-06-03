@@ -16,7 +16,7 @@ class ProductMapperTest {
 
     @Test
     void selectByIdTest(){
-        int pk = 3;
+        Long pk = 3L;
         log.info(productMapper.selectById(pk).toString());
     }
 
@@ -42,7 +42,7 @@ class ProductMapperTest {
     // 안됨
     @Test
     void updateByIdTest(){
-        int pk = 18;
+        Long pk = 18L;
         Double price = 455.5;
 
         // 가격을 변경하는 update문
@@ -58,7 +58,7 @@ class ProductMapperTest {
 
     @Test
     void deleteByIdTest(){
-        int pk = 16;
+        Long pk = 18L;
         productMapper.deleteById(pk);
     }
 }
