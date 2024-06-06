@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.practice_project.mapper.AnimalMapper">
+    <select id="selectTest" resultType="AnimalVO">
+        select *from animal
+    </select>
+
+<!-- 동물들의 전체 목록을 불러오는 select   -->
+    <select id="selectAll" resultType="AnimalDTO">
+        select id, name from animal
+        order by id
+    </select>
+
+<!-- 동물의 세부 정보를 불러오는 select -->
+    <select id="selectOne" resultType="AnimalDetailDTO">
+        select *from animal
+        where id = #{id}
+    </select>
+
+<!--  insert  -->
+    <insert id="insert" parameterType="AnimalVO">
+        insert into animal
+        values (seq_animal.nextval, #{name}, #{species}, #{description})
+    </insert>
+
+<!--  delete  -->
+    <delete id="deleteOne">
+        delete from animal
+        where id = #{id}
+    </delete>
+
+<!--  update  -->
+    <update id="updateAnimal">
+        update animal
+        set name = #{name}, species= #{species}, description = #{description}
+        where id = #{id}
+    </update>
+</mapper>

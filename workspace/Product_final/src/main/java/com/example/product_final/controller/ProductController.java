@@ -64,14 +64,15 @@ public class ProductController {
     public String writeOk(@ModelAttribute ProductDTO2 product){
         ProductVO vo = ProductVO.toEntity(product);
 
-        // update가 넘어왔다면
+        log.info(String.valueOf(vo.getId()));
+        // 업데이트가 넘어왔다면
         if(vo.getId() != null){
             productService.edit(vo);
             return "redirect:/product/detail/" + vo.getId();
         }
-        productService.save(vo);
 
-        // html이 아닌 controller를 요청하는 문법
+        productService.save(vo);
+        // html 이 아닌, 컨트롤러를 요청한다.
         return "redirect:/product/list";
     }
 
