@@ -100,6 +100,7 @@ public class AnimalController {
         AnimalVO vo = AnimalVO.toEntity(animalInsertDTO);
 
         // id가 넘어왔다면? update문 실행!
+        // 0보단 null로 하는 것이 좋다.
         if(vo.getId() != 0){
             animalService.edit(vo);
             return "redirect:/animal/detail/" +vo.getId();

@@ -18,8 +18,11 @@ public interface ProductMapper {
     ProductDetailDTO selectOne(Long id);
 
     // 새 물품 등록 sql
-    void insert(ProductVO vo);
+    int insert(ProductVO vo);
 
     // update sql
     void update(ProductVO vo);
+
+    // delete sql
+    int delete(Long id);
 }

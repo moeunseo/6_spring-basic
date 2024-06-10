@@ -29,4 +29,10 @@
         set name = #{name}, price = #{price}, category = #{category}, description = #{description}
         where id = #{id}
     </update>
+
+<!--  delete  -->
+    <delete id="delete">
+        delete from product
+        where id = #{id}
+    </delete>
 </mapper>
