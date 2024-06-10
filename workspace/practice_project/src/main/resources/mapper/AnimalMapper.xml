@@ -18,22 +18,34 @@
         where id = #{id}
     </select>
 
-<!--  insert  -->
+<!-- 동물 정보 insert  -->
     <insert id="insert" parameterType="AnimalVO">
         insert into animal
         values (seq_animal.nextval, #{name}, #{species}, #{description})
     </insert>
 
-<!--  delete  -->
+<!-- 동물 delete  -->
     <delete id="deleteOne">
         delete from animal
         where id = #{id}
     </delete>
 
-<!--  update  -->
+<!--  동물 update  -->
     <update id="updateAnimal">
         update animal
         set name = #{name}, species= #{species}, description = #{description}
         where id = #{id}
     </update>
+
+<!-- 회원가입 insert  -->
+    <insert id="join" parameterType="UserVO">
+        insert into user_join
+        values (seq_join.nextval, #{id}, #{pwd}, #{name})
+    </insert>
+
+<!-- 로그인 select  -->
+    <select id="login" resultType="LoginDTO">
+        select id, pwd from user_join
+        where id = #{id}
+    </select>
 </mapper>

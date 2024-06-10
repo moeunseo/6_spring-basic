@@ -2,7 +2,9 @@ package com.example.practice_project.service;
 
 import com.example.practice_project.domain.dto.AnimalDTO;
 import com.example.practice_project.domain.dto.AnimalDetailDTO;
+import com.example.practice_project.domain.dto.LoginDTO;
 import com.example.practice_project.domain.vo.AnimalVO;
+import com.example.practice_project.domain.vo.UserVO;
 import com.example.practice_project.mapper.AnimalMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -44,5 +46,17 @@ public class AnimalServiceImpl implements AnimalService {
     @Override
     public void edit(AnimalVO vo) {
         animalMapper.updateAnimal(vo);
+    }
+
+    // 회원가입 insert
+    @Override
+    public void userSave(UserVO vo) {
+        animalMapper.join(vo);
+    }
+
+    // 로그인 select
+    @Override
+    public List<LoginDTO> findUser(String id) {
+        return animalMapper.login(id);
     }
 }

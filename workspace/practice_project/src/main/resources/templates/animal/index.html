@@ -1,9 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>test page</title>
+    <title>Main</title>
 </head>
 <body>
-    <h1>테스트 페이지 입니다~</h1>
+    <h1>안녕하세요. 유기견 보호센터 입니다.</h1>
+    <a th:href="@{/animal/joinpage}">회원가입</a><br>
+    <a th:href="@{/animal/loginpage}">로그인</a>
 </body>
 </html>

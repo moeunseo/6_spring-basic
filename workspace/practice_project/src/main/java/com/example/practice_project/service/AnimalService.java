@@ -2,7 +2,9 @@ package com.example.practice_project.service;
 
 import com.example.practice_project.domain.dto.AnimalDTO;
 import com.example.practice_project.domain.dto.AnimalDetailDTO;
+import com.example.practice_project.domain.dto.LoginDTO;
 import com.example.practice_project.domain.vo.AnimalVO;
+import com.example.practice_project.domain.vo.UserVO;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,4 +27,10 @@ public interface AnimalService {
 
     // 동물 정보 수정하는 update
     void edit(AnimalVO vo);
+
+    // 회원가입 insert
+    void userSave(UserVO vo);
+
+    // 로그인 select
+    List<LoginDTO> findUser(String id);
 }

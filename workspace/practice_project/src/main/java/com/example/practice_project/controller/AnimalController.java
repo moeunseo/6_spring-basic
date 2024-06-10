@@ -1,13 +1,18 @@
 package com.example.practice_project.controller;
 
 import com.example.practice_project.domain.dto.AnimalInsertDTO;
+import com.example.practice_project.domain.dto.LoginDTO;
+import com.example.practice_project.domain.dto.UserDTO;
 import com.example.practice_project.domain.vo.AnimalVO;
+import com.example.practice_project.domain.vo.UserVO;
 import com.example.practice_project.service.AnimalService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 @Slf4j
@@ -18,6 +23,48 @@ public class AnimalController {
     private final AnimalService animalService;
 
     // 첫 페이지는 무조건 index.html이어야만 하는가!
+    @GetMapping
+    public String index() {
+        return "/animal/index";
+    }
+
+    // 회원가입 페이지로 이동하는 컨트롤러
+    @GetMapping("/joinpage")
+    public String join(Model model) {
+        model.addAttribute("user", new UserDTO());
+        return "/animal/joinpage";
+    }
+
+    // 회원가입 컨트롤러
+    @PostMapping("/joinpage")
+    public String joinInsert(@ModelAttribute UserDTO dto) {
+        UserVO vo = UserVO.toEntity(dto);
+        animalService.userSave(vo);
+        return "redirect:/animal";
+    }
+
+    // 로그인 페이지로 이동하는 컨트롤러
+    @GetMapping("/loginpage")
+    public String login(Model model) {
+        model.addAttribute("user", new LoginDTO());
+        return "/animal/loginpage";
+    }
+
+    // 로그인을 하기위한 컨트롤러
+    //  게시판 진행해보고 해보기!
+    @PostMapping("/loginpage")
+    public String loginCheck(@ModelAttribute LoginDTO dto) {
+        // 전체 user 정보를 담는 리스트
+        List<LoginDTO> user = animalService.findUser(dto.getId());
+        for (LoginDTO loginDTO : user) {
+            if(loginDTO.getId().equals(dto.getId())) {
+                if(loginDTO.getPwd() == dto.getPwd()) {
+                    return "redirect:/animal/list";
+                }
+            }
+        }
+        return "redirect:/animal";
+    }
 
     // 동물 전체 목록을 보여주는 컨트롤러
     @GetMapping("/list")
