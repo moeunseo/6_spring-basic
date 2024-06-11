@@ -123,12 +123,20 @@ public class ProductController {
 
         List<ProductDTO> products = pagingService.selectPaging(pageNo, pageSize);
 
+        int pageGroupSize = 3;
+        int startPage = ((pageNo - 1) / pageGroupSize) * pageGroupSize + 1;
+        int endPage = Math.min(startPage + pageGroupSize - 1, totalPages);
+
         // html로 넘겨야하는 값들은?
         // 1. 데이터 2. 현재 페이지와 페이지 사이즈 3. 총 페이지 수
         model.addAttribute("products", products);
         model.addAttribute("currentPage", pageNo);
         model.addAttribute("pageSize", pageSize);
         model.addAttribute("totalPages", totalPages);
+
+        // 4. 시작 페이지 수 5. 마지막 페이지 수
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("endPage", endPage);
 
         return "/product/paging";
     }
