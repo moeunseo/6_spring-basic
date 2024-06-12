@@ -47,6 +47,7 @@ public class SecurityConfig {
                                 .usernameParameter("userId") // 사용자 ID 필드의 이름을 설정.
 //                        .passwordParameter("password") // 필드의 이름과 동일하다면 생략 가능!
 //                        .defaultSuccessUrl("/product/list")
+                        // 로그인 성공 시 이벤트 실행
                                 .successHandler(authenticationSuccessHandler())
 
                 )
