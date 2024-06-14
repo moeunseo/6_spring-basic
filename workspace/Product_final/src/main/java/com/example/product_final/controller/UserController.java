@@ -40,7 +40,6 @@ public class UserController {
         return "/login/login";
     }
 
-
     // 로그아웃 구현
     @GetMapping("/logout")
     public String logout(HttpServletRequest request, HttpServletResponse response) {
