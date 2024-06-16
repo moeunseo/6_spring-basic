@@ -2,14 +2,25 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.example.practice_project.mapper.AnimalMapper">
-    <select id="selectTest" resultType="AnimalVO">
-        select *from animal
-    </select>
-
 <!-- 동물들의 전체 목록을 불러오는 select   -->
     <select id="selectAll" resultType="AnimalDTO">
-        select id, name from animal
-        order by id
+        select id, name
+        from (
+             select rownum as rn, p.*
+             from(
+                 select id, name
+                 from animal
+                 order by id
+                 ) p
+             )
+        where rn &gt;  #{startRow}
+        and rn &lt;= #{endRow}
+    </select>
+
+    <!-- product테이블의 총 데이터의 수  -->
+    <select id="countAnimals" resultType="int">
+        select count(*)
+        from animal
     </select>
 
 <!-- 동물의 세부 정보를 불러오는 select -->
@@ -36,16 +47,4 @@
         set name = #{name}, species= #{species}, description = #{description}
         where id = #{id}
     </update>
-
-<!-- 회원가입 insert  -->
-    <insert id="join" parameterType="UserVO">
-        insert into user_join
-        values (seq_join.nextval, #{id}, #{pwd}, #{name})
-    </insert>
-
-<!-- 로그인 select  -->
-    <select id="login" resultType="LoginDTO">
-        select id, pwd from user_join
-        where id = #{id}
-    </select>
 </mapper>

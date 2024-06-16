@@ -40,6 +40,7 @@
     </tr>
   </table>
   <div class="d-flex justify-content-between">
+<!--  뒤로가기 눌렀을 때, 현재 머물러있는 페이지에 있기  -->
     <a th:href="@{/animal/list}" class="btn btn-secondary">Back</a>
     <a th:href="@{/animal/edit/{id}(id=${animal.id})}" class="btn btn-primary">Edit</a>
     <a th:href="@{/animal/detail/delete/{id}(id=${animal.id})}" class="btn btn-danger">Delete</a>

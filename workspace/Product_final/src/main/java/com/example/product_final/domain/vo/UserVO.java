@@ -37,6 +37,7 @@ public class UserVO implements UserDetails {
         this.id = id;
         this.userId = userId;
         this.email = email;
+        // getter가 있고 이름이 동일하기 때문에 getPassword가 필요없다.
         this.password = password;
     }
 
@@ -49,11 +50,14 @@ public class UserVO implements UserDetails {
     }
 
 
+    // 사용자에게 부여된 권한 반환
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority("basic"));
     }
 
+    // 시큐리티에선 PK로 사용할 변수
+    // 우리는 UserId를 사용할 것
     @Override
     public String getUsername() {
         return userId;

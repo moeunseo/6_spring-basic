@@ -1,6 +1,7 @@
 package com.example.board.service;
 
 import com.example.board.domain.dto.UsersDTO;
+import com.example.board.domain.oauth.CustomOAuth2User;
 import com.example.board.domain.vo.UsersVO;
 import com.example.board.mapper.UsersMapper;
 import lombok.RequiredArgsConstructor;
@@ -58,6 +59,8 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             usersMapper.updateUser(user);
         }
         System.out.println(oAuth2User);
-        return oAuth2User;
+        // 시큐리티에 등록되면서 넘어가는 값
+//        return oAuth2User;
+        return new CustomOAuth2User(oAuth2User, name, profileUrl, providerId);
     }
 }

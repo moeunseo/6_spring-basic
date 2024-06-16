@@ -1,10 +1,8 @@
 package com.example.practice_project.controller;
 
+import com.example.practice_project.domain.dto.AnimalDTO;
 import com.example.practice_project.domain.dto.AnimalInsertDTO;
-import com.example.practice_project.domain.dto.LoginDTO;
-import com.example.practice_project.domain.dto.UserDTO;
 import com.example.practice_project.domain.vo.AnimalVO;
-import com.example.practice_project.domain.vo.UserVO;
 import com.example.practice_project.service.AnimalService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,48 +26,35 @@ public class AnimalController {
         return "/animal/index";
     }
 
-    // 회원가입 페이지로 이동하는 컨트롤러
-    @GetMapping("/joinpage")
-    public String join(Model model) {
-        model.addAttribute("user", new UserDTO());
-        return "/animal/joinpage";
-    }
-
-    // 회원가입 컨트롤러
-    @PostMapping("/joinpage")
-    public String joinInsert(@ModelAttribute UserDTO dto) {
-        UserVO vo = UserVO.toEntity(dto);
-        animalService.userSave(vo);
-        return "redirect:/animal";
-    }
-
-    // 로그인 페이지로 이동하는 컨트롤러
-    @GetMapping("/loginpage")
-    public String login(Model model) {
-        model.addAttribute("user", new LoginDTO());
-        return "/animal/loginpage";
-    }
-
-    // 로그인을 하기위한 컨트롤러
-    //  게시판 진행해보고 해보기!
-    @PostMapping("/loginpage")
-    public String loginCheck(@ModelAttribute LoginDTO dto) {
-        // 전체 user 정보를 담는 리스트
-        List<LoginDTO> user = animalService.findUser(dto.getId());
-        for (LoginDTO loginDTO : user) {
-            if(loginDTO.getId().equals(dto.getId())) {
-                if(loginDTO.getPwd() == dto.getPwd()) {
-                    return "redirect:/animal/list";
-                }
-            }
-        }
-        return "redirect:/animal";
-    }
-
     // 동물 전체 목록을 보여주는 컨트롤러
     @GetMapping("/list")
-    public String AnimalList(Model model) {
-        model.addAttribute("animals", animalService.findAll());
+    public String AnimalList(@RequestParam(value="pageNo", defaultValue = "1") int pageNo,
+                             @RequestParam(value = "pageSize", defaultValue = "3") int pageSize,
+                             Model model) {
+
+        // 동물 테이블 안에 있는 데이터 행의 갯수를 가져오기
+        int totalAnimals = animalService.countAnimals();
+
+        // 올림을 사용하여 페이지수 구하기!
+        int totalPages = (int)Math.ceil((double)totalAnimals/pageSize);
+
+        List<AnimalDTO> animals = animalService.findAll(pageNo, pageSize);
+
+        int pageGroupSize = 4;
+        int startPage = ((pageNo - 1) / pageGroupSize) * pageGroupSize + 1;
+        int endPage = Math.min(startPage + pageGroupSize - 1, totalPages);
+
+        // html로 넘겨야하는 값들은?
+        // 1. 데이터 2. 현재 페이지와 페이지 사이즈 3. 총 페이지 수
+        model.addAttribute("animals", animals);
+        model.addAttribute("currentPage", pageNo);
+        model.addAttribute("pageSize", pageSize);
+        model.addAttribute("totalPages", totalPages);
+
+        // 4. 시작 페이지 수 5. 마지막 페이지 수
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("endPage", endPage);
+
         return "/animal/animallist";
     }
 

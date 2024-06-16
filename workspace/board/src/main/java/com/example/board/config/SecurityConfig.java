@@ -35,7 +35,7 @@ public class SecurityConfig {
                             //
 //                            String clientId = request.getParameter("ClientId");
                             String clientId = "90e1de5b844be94081ddac49ac0ad036";
-                            String logoutRedirectUri = "http://localhost:8090/board/list";
+                            String logoutRedirectUri = "http://localhost:8090";
                             String logoutUri = "https://kauth.kakao.com/oauth/logout?client_id=" + clientId + "&logout_redirect_uri=" + logoutRedirectUri;
                             response.sendRedirect(logoutUri);
                         })
@@ -46,7 +46,7 @@ public class SecurityConfig {
     @Bean
     public AuthenticationSuccessHandler authenticationSuccessHandler() {
         return (request, response, auth) -> {
-            response.sendRedirect("/board/list");
+            response.sendRedirect("/");
         };
     }
 }

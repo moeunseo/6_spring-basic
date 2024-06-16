@@ -2,9 +2,7 @@ package com.example.practice_project.service;
 
 import com.example.practice_project.domain.dto.AnimalDTO;
 import com.example.practice_project.domain.dto.AnimalDetailDTO;
-import com.example.practice_project.domain.dto.LoginDTO;
 import com.example.practice_project.domain.vo.AnimalVO;
-import com.example.practice_project.domain.vo.UserVO;
 import com.example.practice_project.mapper.AnimalMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,8 +18,16 @@ public class AnimalServiceImpl implements AnimalService {
 
     // 동물 테이블의 전체 목록을 불러오는 select
     @Override
-    public List<AnimalDTO> findAll() {
-        return animalMapper.selectAll();
+    public List<AnimalDTO> findAll(int pageNo, int pageSize) {
+        int startRow = (pageNo - 1) * pageSize;
+        int endRow = pageNo * pageSize;
+
+        return animalMapper.selectAll(startRow, endRow);
+    }
+
+    @Override
+    public int countAnimals() {
+        return animalMapper.countAnimals();
     }
 
     // 동물의 세부정보를 받아올 select
@@ -46,17 +52,5 @@ public class AnimalServiceImpl implements AnimalService {
     @Override
     public void edit(AnimalVO vo) {
         animalMapper.updateAnimal(vo);
-    }
-
-    // 회원가입 insert
-    @Override
-    public void userSave(UserVO vo) {
-        animalMapper.join(vo);
-    }
-
-    // 로그인 select
-    @Override
-    public List<LoginDTO> findUser(String id) {
-        return animalMapper.login(id);
     }
 }

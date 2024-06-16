@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
-  <meta charset="UTF-8" xmlns:th="http://www.thymeleaf.org">
+  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <title>Animal Page</title>
 
@@ -21,12 +21,27 @@
     h1 {
       font-size: 1.5rem;
     }
+    .header{
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
   </style>
 </head>
 <body>
 <div class="container mt-5">
-  <h1 class="mb-4">Animal List</h1>
-
+  <div class="mb-4 header">
+    <h1 class="mb-4">Animal List</h1>
+    <!-- 인증이 되어있지 않다면, 즉 로그인이 되어있지 않다면 -->
+    <a sec:authorize="!isAuthenticated()" class="btn btn-primary" th:href="@{/user/login}">로그인</a>
+    <div sec:authorize="isAuthenticated()">
+      <span sec:authentication="principal.name"></span>
+      <span>님 환영합니다.</span>
+    </div>
+<!-- 로그인이 되어있다면 -->
+<!-- 로그아웃을 클릭하면 세션을 무효화 시킨 후 원래 창으로 다시 이동!   -->
+    <a sec:authorize="isAuthenticated()" class="btn btn-danger" th:href="@{/user/logout}">로그아웃</a>
+  </div>
   <table class="table table-striped table-bordered">
     <thead class="table-dark">
     <tr>
@@ -36,11 +51,28 @@
     </thead>
     <tbody>
     <tr th:each="animal:${animals}" th:object="${animal}">
+<!--  dto에 선언한 변수명으로 가져오면 된다.   -->
       <td th:text="*{id}"></td>
       <td><a th:href="@{/animal/detail/{id}(id=*{id})}" th:text="*{name}"></a></td>
     </tr>
     </tbody>
   </table>
+<!-- 페이징 처리하는 태그 -->
+  <nav>
+    <ul class="pagination justify-content-center">
+      <li th:classappend="${startPage == 1} ? 'disabled' : ''" class="page-item">
+        <a th:href="@{/animal/list(pageNo=${startPage - 1}, pageSize=${pageSize})}" class="page-link"><</a>
+      </li>
+
+      <li th:each="i : ${#numbers.sequence(startPage, endPage)}" th:classappend="${currentPage == i} ? 'active' : ''" class="page-item">
+        <a th:href="@{/animal/list(pageNo=${i}, pageSize=${pageSize})}" class="page-link" th:text="${i}"></a>
+      </li>
+
+      <li th:classappend="${endPage == totalPages} ? 'disabled' : ''" class="page-item">
+        <a th:href="@{/animal/list(pageNo=${endPage + 1}, pageSize=${pageSize})}" class="page-link">></a>
+      </li>
+    </ul>
+  </nav>
   <div class="d-flex justify-content-end mb-3">
     <a class="btn btn-success" th:href="@{/animal/writeanimal}">동물 등록</a>
   </div>
