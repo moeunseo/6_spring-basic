@@ -1,13 +1,13 @@
 package com.example.board.controller;
 
+import com.example.board.domain.dto.BoardDTO;
 import com.example.board.domain.dto.BoardListDTO;
 import com.example.board.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -20,7 +20,7 @@ public class BoardController {
 
     @GetMapping("/list")
     public String paging(@RequestParam(value="pageNo", defaultValue = "1") int pageNo,
-                         @RequestParam(value = "pageSize", defaultValue = "2") int pageSize,
+                         @RequestParam(value = "pageSize", defaultValue = "5") int pageSize,
                          Model model) {
 
         int totalBoards = boardService.countBoard();
@@ -45,5 +45,21 @@ public class BoardController {
         model.addAttribute("endPage", endPage);
 
         return "/board/list";
+    }
+
+    // 게시글 작성 폼으로 이동
+    @GetMapping("/write")
+    public String writeForm(Model model) {
+        model.addAttribute("board", new BoardDTO());
+        return "board/write";
+    }
+
+    // 게시글 작성 처리 기능
+    @PostMapping("/write")
+    public String write(@ModelAttribute("board") BoardDTO board, @RequestParam("providerId") String providerId,
+                        List<MultipartFile> files) {
+        board.setProviderId(providerId);
+        boardService.saveBoard(board, files);
+        return "redirect:/board/list";
     }
 }
