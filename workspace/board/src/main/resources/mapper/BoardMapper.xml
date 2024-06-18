@@ -45,4 +45,28 @@
         insert into tbl_board
         values (#{boardId}, #{boardTitle}, #{boardContent}, 0, sysdate, sysdate, #{providerId})
     </insert>
+
+<!-- 게시물 상세보기 -->
+    <select id="selectBoardDetail" resultType="BoardDetailDTO">
+        SELECT
+            B.BOARD_ID,
+            B.BOARD_TITLE,
+            B.BOARD_CONTENT,
+            U.NAME,
+            B.BOARD_VIEWS,
+            B.BOARD_REGISTER_DATE,
+            B.BOARD_UPDATE_DATE,
+            U.PROVIDER_ID,
+            (SELECT COUNT(*) FROM TBL_FILE F WHERE F.BOARD_ID = B.BOARD_ID) AS FILE_COUNT
+        FROM
+            TBL_BOARD B JOIN TBL_USERS U ON U.PROVIDER_ID = B.PROVIDER_ID
+        where B.BOARD_ID = #{boardId}
+    </select>
+
+<!--  조회수 +1  -->
+    <update id="plusView">
+        update tbl_board
+        set board_views = board_views + 1
+        where BOARD_ID = #{boardId}
+    </update>
 </mapper>

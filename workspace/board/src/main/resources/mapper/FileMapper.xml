@@ -7,4 +7,19 @@
         INSERT INTO TBL_FILE (file_id, board_id, original_file_name, stored_file_name, file_size, upload_time)
         VALUES (seq_file.nextval, #{boardId}, #{originalFileName}, #{storedFileName}, #{fileSize}, SYSDATE)
     </insert>
+
+<!--  게시글 번호로 첨부파일들 가져오기  -->
+    <!--  게시글 번호로 첨부파일들 가져오기  -->
+    <select id="selectFileList" resultType="FileDTO">
+        select
+            FILE_ID,
+            ORIGINAL_FILE_NAME,
+            STORED_FILE_NAME,
+            FILE_SIZE,
+            UPLOAD_TIME,
+            BOARD_ID
+        from
+            tbl_file
+        where BOARD_ID = #{boardId}
+    </select>
 </mapper>
