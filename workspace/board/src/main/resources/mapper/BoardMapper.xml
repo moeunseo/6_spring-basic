@@ -69,4 +69,18 @@
         set board_views = board_views + 1
         where BOARD_ID = #{boardId}
     </update>
+
+<!-- 게시글 수정하기 -->
+    <update id="updateBoard">
+        update tbl_board
+        set BOARD_TITLE = #{boardTitle},
+            BOARD_CONTENT = #{boardContent},
+            BOARD_UPDATE_DATE = sysdate
+        where BOARD_ID = #{boardId}
+    </update>
+
+    <delete id="deleteBoard">
+        delete from tbl_board
+        where BOARD_ID = #{boardId}
+    </delete>
 </mapper>

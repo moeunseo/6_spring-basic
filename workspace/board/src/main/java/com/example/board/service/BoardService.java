@@ -25,4 +25,17 @@ public interface BoardService {
     // 게시글 상세보기
     BoardDetailDTO getBoardById(Long boardId, CustomOAuth2User customOAuth2User);
 
+    // 게시글 업데이트로 이동할 때 가지고 갈 board select
+    BoardDetailDTO goUpdateBoard(Long boardId);
+
+    // 게시글 업데이트
+    // 수정하기를 누르면 첨부파일은 초기화가 되게 구현
+    void updateBoard(BoardDTO board, List<MultipartFile> files);
+
+    // 첨부파일 추가 메소드
+    void saveFile(Long boardId, List<MultipartFile> file);
+
+    // 게시글 삭제
+    void deleteBoard(Long boardId);
+
 }

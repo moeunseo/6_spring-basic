@@ -5,6 +5,7 @@ import com.example.board.domain.dto.BoardDetailDTO;
 import com.example.board.domain.dto.BoardListDTO;
 import com.example.board.domain.dto.FileDTO;
 import com.example.board.domain.oauth.CustomOAuth2User;
+import com.example.board.domain.vo.BoardVO;
 import com.example.board.domain.vo.FileVO;
 import com.example.board.mapper.BoardMapper;
 import com.example.board.mapper.FileMapper;
@@ -30,9 +31,10 @@ public class BoardServiceImpl implements BoardService {
     private final FileMapper fileMapper;
 
     @Override
-    public List<BoardListDTO> selectAll(int pageNo, int pageSize) {
-        int startRow = (pageNo - 1) * pageSize;
-        int endRow = pageNo * pageSize;
+    public List<BoardListDTO> selectAll(int page, int pageSize) {
+
+        int startRow = (page - 1) * pageSize;
+        int endRow = page * pageSize;
 
         return boardMapper.selectAll(startRow, endRow);
     }
@@ -45,26 +47,54 @@ public class BoardServiceImpl implements BoardService {
     @Override
     @Transactional // 해당 메소드를 하나의 트랜잭션으로 묶는다.
     public void saveBoard(BoardDTO board, List<MultipartFile> files) {
-        // 다음 시퀀스 번호를 받아와서
         Long boardId = boardMapper.getSeq();
-        // insert 할 시퀀스 번호 먼저 지정
         board.setBoardId(boardId);
-        // 후에 게시글 작성하게 하기
         boardMapper.saveBoard(board); // 게시글 정보 저장
 
+        saveFile(boardId, files);
+    }
+
+    @Override
+    @Transactional
+    public BoardDetailDTO getBoardById(Long boardId, CustomOAuth2User customOAuth2User) {
+        BoardDetailDTO board = boardMapper.selectBoardDetail(boardId);
+
+        // 조회 수 상승을 결정할 if
+        if(customOAuth2User == null || !customOAuth2User.getProviderId().equals(board.getProviderId())){
+            // 조회 수가 플러스 1이 되는 update 쿼리문
+            boardMapper.plusView(boardId);
+        }
+        return board;
+    }
+
+    // 수정 폼으로 이동할 때 가지고갈 board select
+    @Override
+    public BoardDetailDTO goUpdateBoard(Long boardId) {
+        return boardMapper.selectBoardDetail(boardId);
+    }
+
+    @Override
+    public void updateBoard(BoardDTO board, List<MultipartFile> files) {
+        boardMapper.updateBoard(BoardVO.toEntity(board));
+        // 원래 있던 첨부파일 삭제
+        fileMapper.deleteFile(board.getBoardId());
+
+        // 그냥 files insert
+        saveFile(board.getBoardId(), files);
+    }
+
+    @Override
+    public void saveFile(Long boardId, List<MultipartFile> files) {
         // 현재 날짜를 기반으로 폴더 경로 생성
-        LocalDate now = LocalDate.now(); // 년.월.일
+        LocalDate now = LocalDate.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
         String datePath = now.format(formatter);
 
         for (MultipartFile file : files) {
-            // 방어코드 (있어도 되고, 없어도 되지만 써주기)
+            // 방어코드
             if (file.isEmpty()) continue; // 파일이 비어있으면 건너뜀
 
-            // 내가 정해줬던 파일 이름
             String originalFileName = file.getOriginalFilename();
-            // 중복되지 않은 값을 만드는 패턴
-            // 다운로드 할 파일 이름
             String storedFileName = UUID.randomUUID().toString().replaceAll("-", "") + "_" + originalFileName;
             Long fileSize = file.getSize();
 
@@ -93,16 +123,7 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    @Transactional
-    public BoardDetailDTO getBoardById(Long boardId, CustomOAuth2User customOAuth2User) {
-        BoardDetailDTO board = boardMapper.selectBoardDetail(boardId);
-
-        // 조회수 상승을 결정할 if문
-        if(customOAuth2User == null || !customOAuth2User.getProviderId().equals(board.getProviderId())) {
-            // 조회수가 +1이 되는 update 쿼리문
-            boardMapper.plusView(boardId);
-        }
-        // null을 하면 안되는거야!!!!
-        return board;
+    public void deleteBoard(Long boardId) {
+        boardMapper.deleteBoard(boardId);
     }
 }

@@ -22,4 +22,10 @@
             tbl_file
         where BOARD_ID = #{boardId}
     </select>
+
+<!-- 게시글 번호로 첨부파일 삭제 -->
+    <delete id="deleteFile">
+        delete from tbl_file
+        where BOARD_ID = #{boardId}
+    </delete>
 </mapper>

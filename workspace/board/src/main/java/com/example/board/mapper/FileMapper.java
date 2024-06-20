@@ -15,4 +15,9 @@ public interface FileMapper {
 
     // 상세보기 페이지 들어갈 때, 첨부파일 다운로드
     List<FileDTO> selectFileList(Long boardId);
+
+    // 첨부파일 db 에서 삭제
+    // 게시글 업데이트할 때 사용할 예정
+    void deleteFile(Long boardId);
+
 }

@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
@@ -19,6 +20,10 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
+                // cross-site request forgery
+                // csrf 보호 기능을 비활성화
+                // post 방식으로 delete할 때 적어줘야함
+                .csrf(AbstractHttpConfigurer::disable)
                 // 요청에 대한 인증 및 인가를 설정
                 .authorizeHttpRequests(auth -> auth
                         .anyRequest().permitAll()
@@ -32,8 +37,6 @@ public class SecurityConfig {
                 // 로그아웃
                 .logout(logout -> logout
                         .logoutSuccessHandler((request, response, authentication) -> {
-                            //
-//                            String clientId = request.getParameter("ClientId");
                             String clientId = "90e1de5b844be94081ddac49ac0ad036";
                             String logoutRedirectUri = "http://localhost:8090";
                             String logoutUri = "https://kauth.kakao.com/oauth/logout?client_id=" + clientId + "&logout_redirect_uri=" + logoutRedirectUri;
