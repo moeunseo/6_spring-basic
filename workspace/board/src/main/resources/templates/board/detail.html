@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>호근커뮤니티 - 게시글 상세보기</title>
+    <title>은서커뮤니티 - 게시글 상세보기</title>
     <link rel="stylesheet" th:href="@{/css/layout.css}">
     <link rel="stylesheet" th:href="@{/css/detail.css}">
 </head>
@@ -12,7 +12,7 @@
 <!-- Main -->
 <div id="main" class="container">
     <header class="head">
-        <h1 class="fw-bold">호근커뮤니티</h1>
+        <h1 class="fw-bold">은서커뮤니티</h1>
         <p>게시글 상세보기</p>
     </header>
 
@@ -60,9 +60,11 @@
             <div class="mb-3" th:if="${not #lists.isEmpty(files)}">
                 <h4>첨부파일</h4>
                 <div class="uploadResult">
+                <!-- 목록을 누르면 첨부파일 다운로드
+                     파일을 다운로드 하기 위해선 경로 필요 -->
                     <ul>
                         <li th:each="file : ${files}" th:object="${file}">
-                            <a href="#" th:text="${file.originalFileName}"></a>
+                            <a th:href="@{/download/{fileId}(fileId=${file.fileId})}" th:text="${file.originalFileName}"></a>
                             <span th:text="${file.fileSize / 1024 + 'KB'}"></span>
                         </li>
                     </ul>

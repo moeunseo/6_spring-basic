@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
+// 페이지 요청하는 어노테이션
 @Controller
 @RequestMapping("/board")
 @RequiredArgsConstructor
@@ -92,7 +93,7 @@ public class BoardController {
         return "board/edit";
     }
 
-    // 게시글 수정
+    // 게시글 수정 컨트롤러
     @PostMapping("/edit")
     public String edit(BoardDTO board, List<MultipartFile> files) {
         boardService.updateBoard(board, files);

@@ -15,11 +15,11 @@ import java.util.Map;
 @AllArgsConstructor
 public class CustomOAuth2User implements OAuth2User {
 
+    // service 에서 구현한 값들을 getter로 편하게 가지고 오기 위한 커스텀 VO
     private final OAuth2User oauth2User;
     private final String name;
     private final String profilePic;
     private final String providerId;
-
 
     @Override
     public Map<String, Object> getAttributes() {
@@ -30,5 +30,4 @@ public class CustomOAuth2User implements OAuth2User {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return oauth2User.getAuthorities();
     }
-
 }

@@ -9,7 +9,6 @@
     </insert>
 
 <!--  게시글 번호로 첨부파일들 가져오기  -->
-    <!--  게시글 번호로 첨부파일들 가져오기  -->
     <select id="selectFileList" resultType="FileDTO">
         select
             FILE_ID,
@@ -28,4 +27,19 @@
         delete from tbl_file
         where BOARD_ID = #{boardId}
     </delete>
+
+<!-- 파일ID를 이용해서 첨부파일 정보 가져오기  -->
+<!-- 내가 클릭한 첨부파일은 뭐야?   -->
+    <select id="getFileById" resultType="FileDTO">
+        select
+            FILE_ID,
+            ORIGINAL_FILE_NAME,
+            STORED_FILE_NAME,
+            FILE_SIZE,
+            UPLOAD_TIME,
+            BOARD_ID
+        from
+            tbl_file
+        where FILE_ID = #{fileId}
+    </select>
 </mapper>

@@ -49,6 +49,7 @@ public class SecurityConfig {
     @Bean
     public AuthenticationSuccessHandler authenticationSuccessHandler() {
         return (request, response, auth) -> {
+            // 로그인이 성공하면 메인화면으로 /board/list로 페이지 이동
             response.sendRedirect("/");
         };
     }

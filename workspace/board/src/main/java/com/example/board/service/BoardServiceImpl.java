@@ -30,6 +30,7 @@ public class BoardServiceImpl implements BoardService {
     private final BoardMapper boardMapper;
     private final FileMapper fileMapper;
 
+    // 페이징 처리 후 모든 리스트 select
     @Override
     public List<BoardListDTO> selectAll(int page, int pageSize) {
 
@@ -60,6 +61,7 @@ public class BoardServiceImpl implements BoardService {
         BoardDetailDTO board = boardMapper.selectBoardDetail(boardId);
 
         // 조회 수 상승을 결정할 if
+        // 현재 로그인이 되어있지 않거나, 게시글을 작성한 사람과 다른 id를 가진다면 조회수 +1
         if(customOAuth2User == null || !customOAuth2User.getProviderId().equals(board.getProviderId())){
             // 조회 수가 플러스 1이 되는 update 쿼리문
             boardMapper.plusView(boardId);
@@ -67,7 +69,7 @@ public class BoardServiceImpl implements BoardService {
         return board;
     }
 
-    // 수정 폼으로 이동할 때 가지고갈 board select
+    // 수정 폼으로 이동할 때 가지고갈 board(정보) select
     @Override
     public BoardDetailDTO goUpdateBoard(Long boardId) {
         return boardMapper.selectBoardDetail(boardId);
@@ -83,6 +85,7 @@ public class BoardServiceImpl implements BoardService {
         saveFile(board.getBoardId(), files);
     }
 
+    // 여러 개의 청부파일을 올리기 위한 메소드
     @Override
     public void saveFile(Long boardId, List<MultipartFile> files) {
         // 현재 날짜를 기반으로 폴더 경로 생성
@@ -122,6 +125,7 @@ public class BoardServiceImpl implements BoardService {
         }
     }
 
+    // 게시글 삭제 구현
     @Override
     public void deleteBoard(Long boardId) {
         boardMapper.deleteBoard(boardId);
