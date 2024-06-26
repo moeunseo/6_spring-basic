@@ -89,3 +89,11 @@ insert into TBL_BOARD
 (BOARD_ID, BOARD_TITLE, BOARD_CONTENT, BOARD_VIEWS, BOARD_REGISTER_DATE, BOARD_UPDATE_DATE,
  PROVIDER_ID)
 values (seq_board.nextval, '제목', '내용', 1, sysdate, sysdate, '3525143309');
+
+select *from TBL_COMMENT;
+
+select u.name, c.*
+from tbl_users u join TBL_COMMENT c
+                      on u.PROVIDER_ID = c.PROVIDER_ID
+                          and BOARD_ID = 24
+order by COMMENT_UPDATE_DATE desc;

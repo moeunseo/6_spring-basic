@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.board.mapper.CommentMapper">
+<!-- 특정 게시글의 모든 댓글 조회하기 -->
+    <select id="selectCommentById" resultType="CommentListDTO">
+        select u.name, c.*
+        from tbl_users u join TBL_COMMENT c
+        on u.PROVIDER_ID = c.PROVIDER_ID
+        and BOARD_ID = #{boardId}
+        order by COMMENT_UPDATE_DATE desc
+    </select>
+</mapper>
