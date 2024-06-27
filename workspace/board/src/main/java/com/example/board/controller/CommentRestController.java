@@ -1,13 +1,11 @@
 package com.example.board.controller;
 
 
+import com.example.board.domain.dto.CommentDTO;
 import com.example.board.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/comments")
@@ -20,5 +18,26 @@ public class CommentRestController {
     @GetMapping("/{boardId}")
     public ResponseEntity<?> getComments(@PathVariable Long boardId) {
         return ResponseEntity.ok(commentService.getCommentById(boardId));
+    }
+
+    // 댓글 추가
+    @PostMapping
+    public ResponseEntity<?> addComment(@RequestBody CommentDTO commentDTO) {
+        commentService.saveComment(commentDTO);
+        return ResponseEntity.ok().build();
+    }
+
+    // 댓글 삭제
+    @DeleteMapping("/{commentId}")
+    public ResponseEntity<?> deleteComment(@PathVariable Long commentId) {
+        commentService.deleteComment(commentId);
+        return ResponseEntity.ok().build();
+    }
+
+    // 댓글 수정
+    @PutMapping("/{commentId}")
+    public ResponseEntity<?> updateComment(@PathVariable Long commentId, @RequestBody CommentDTO commentDTO) {
+        commentService.updateComment(commentDTO);
+        return ResponseEntity.ok().build();
     }
 }

@@ -71,8 +71,9 @@
                 </div>
             </div>
         </div>
+        <!-- 현재 로그인이 되어있거나, 게시글을 작성한 사람과 로그인한 사람이 같다면 -->
         <div sec:authorize="isAuthenticated()">
-            <input type="hidden" name="loginId" value="">
+            <input type="hidden" name="loginId" th:value="${#authentication.getPrincipal().getProviderId()}">
             <div style="text-align: right;" th:if="${#authentication.getPrincipal().getProviderId() == board.providerId}">
                 <!--     로그인 되어있는 객체와 글작성 객체가 동일할 때 표시       -->
                 <button type="button" class="btn btn-primary" onclick="goUpdate()">수정</button>
@@ -86,7 +87,7 @@
     <h3>댓글</h3>
 
     <!--  로그인 되어 있을 때만 표시  -->
-    <div>
+    <div sec:authorize="isAuthenticated()">
         <div class="comment-form mt-4">
             <form id="commentForm" method="post">
                 <div class="mb-3">
@@ -128,6 +129,7 @@
         </div>
     </div>
 </div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script th:src="@{/js/detail.js}"></script>
 </body>
 </html>
