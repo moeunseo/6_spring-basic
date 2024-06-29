@@ -37,6 +37,7 @@ public class CommentRestController {
     // 댓글 수정
     @PutMapping("/{commentId}")
     public ResponseEntity<?> updateComment(@PathVariable Long commentId, @RequestBody CommentDTO commentDTO) {
+        commentDTO.setCommentId(commentId);
         commentService.updateComment(commentDTO);
         return ResponseEntity.ok().build();
     }

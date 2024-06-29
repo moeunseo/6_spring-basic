@@ -97,3 +97,7 @@ from tbl_users u join TBL_COMMENT c
                       on u.PROVIDER_ID = c.PROVIDER_ID
                           and BOARD_ID = 24
 order by COMMENT_UPDATE_DATE desc;
+
+update tbl_comment
+set comment_content = '이거를 넣어볼게', comment_update_date = sysdate
+where comment_id = 1

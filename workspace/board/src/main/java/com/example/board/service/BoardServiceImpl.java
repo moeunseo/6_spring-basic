@@ -5,6 +5,7 @@ import com.example.board.domain.dto.BoardDetailDTO;
 import com.example.board.domain.dto.BoardListDTO;
 import com.example.board.domain.dto.FileDTO;
 import com.example.board.domain.oauth.CustomOAuth2User;
+import com.example.board.domain.util.PagedResponse;
 import com.example.board.domain.vo.BoardVO;
 import com.example.board.domain.vo.FileVO;
 import com.example.board.mapper.BoardMapper;
@@ -62,7 +63,7 @@ public class BoardServiceImpl implements BoardService {
 
         // 조회 수 상승을 결정할 if
         // 현재 로그인이 되어있지 않거나, 게시글을 작성한 사람과 다른 id를 가진다면 조회수 +1
-        if(customOAuth2User == null || !customOAuth2User.getProviderId().equals(board.getProviderId())){
+        if (customOAuth2User == null || !customOAuth2User.getProviderId().equals(board.getProviderId())) {
             // 조회 수가 플러스 1이 되는 update 쿼리문
             boardMapper.plusView(boardId);
         }
@@ -129,5 +130,80 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public void deleteBoard(Long boardId) {
         boardMapper.deleteBoard(boardId);
+    }
+
+    // 최신순
+    @Override
+    public PagedResponse<BoardListDTO> selectAllByDateDESC(int page, int pageSize) {
+
+        int startRow = (page - 1) * pageSize;
+        int endRow = page * pageSize;
+
+        int totalBoards = boardMapper.countBoard();
+        int totalPages = (int) Math.ceil((double) totalBoards / pageSize);
+
+        int pageGroupSize = 5;
+        int startPage = ((page - 1) / pageGroupSize) * pageGroupSize + 1;
+        int endPage = Math.min(startPage + pageGroupSize - 1, totalPages);
+
+        List<BoardListDTO> boards = boardMapper.selectAll(startRow, endRow);
+
+        return new PagedResponse<>(boards, page, totalPages, pageSize, totalBoards);
+    }
+
+    // 오래된 순
+    @Override
+    public PagedResponse<BoardListDTO> selectAllByDateASC(int page, int pageSize) {
+        int startRow = (page - 1) * pageSize;
+        int endRow = page * pageSize;
+
+        int totalBoards = boardMapper.countBoard();
+        int totalPages = (int) Math.ceil((double) totalBoards / pageSize);
+
+        int pageGroupSize = 5;
+
+        int startPage = ((page - 1) / pageGroupSize) * pageGroupSize + 1;
+        int endPage = Math.min(startPage + pageGroupSize - 1, totalPages);
+
+        List<BoardListDTO> boards = boardMapper.selectAllByDateASC(startRow, endRow);
+
+        return new PagedResponse<>(boards, page, totalPages, pageSize, totalBoards);
+    }
+
+    // 조회순
+    @Override
+    public PagedResponse<BoardListDTO> selectAllByViews(int page, int pageSize) {
+        int startRow = (page - 1) * pageSize;
+        int endRow = page * pageSize;
+
+        int totalBoards = boardMapper.countBoard();
+        int totalPages = (int) Math.ceil((double) totalBoards / pageSize);
+
+        int pageGroupSize = 5;
+
+        int startPage = ((page - 1) / pageGroupSize) * pageGroupSize + 1;
+        int endPage = Math.min(startPage + pageGroupSize - 1, totalPages);
+
+        List<BoardListDTO> boards = boardMapper.selectAllByViews(startRow, endRow);
+
+        return new PagedResponse<>(boards, page, totalPages, pageSize, totalBoards);
+    }
+
+    @Override
+    public PagedResponse<BoardListDTO> selectD(int page, int pageSize, String sort) {
+        int startRow = (page - 1) * pageSize;
+        int endRow = page * pageSize;
+
+        int totalBoards = boardMapper.countBoard();
+        int totalPages = (int) Math.ceil((double) totalBoards / pageSize);
+
+        int pageGroupSize = 5;
+
+        int startPage = ((page - 1) / pageGroupSize) * pageGroupSize + 1;
+        int endPage = Math.min(startPage + pageGroupSize - 1, totalPages);
+
+        List<BoardListDTO> boards = boardMapper.selectD(startRow, endRow, sort);
+
+        return new PagedResponse<>(boards, page, totalPages, pageSize, totalBoards);
     }
 }
