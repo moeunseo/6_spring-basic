@@ -1,5 +1,8 @@
 package com.example.board.config;
 
+import com.example.board.domain.dto.UsersDTO;
+import com.example.board.domain.oauth.CustomOAuth2User;
+import com.example.board.mapper.UsersMapper;
 import com.example.board.service.CustomOAuth2UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -16,6 +19,7 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 public class SecurityConfig {
 
     private final CustomOAuth2UserService customOAuth2UserService;
+    private final UsersMapper usersMapper;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -49,8 +53,16 @@ public class SecurityConfig {
     @Bean
     public AuthenticationSuccessHandler authenticationSuccessHandler() {
         return (request, response, auth) -> {
-            // 로그인이 성공하면 메인화면으로 /board/list로 페이지 이동
-            response.sendRedirect("/");
+            CustomOAuth2User customOAuth2User = (CustomOAuth2User)auth.getPrincipal();
+            UsersDTO user = usersMapper.findByProviderId(customOAuth2User.getProviderId());
+
+            if(user.getRole().equals("new")){
+                response.sendRedirect("/board/join");
+            }
+            else {
+                // 로그인이 성공하면 메인화면으로 /board/list 로 페이지 이동
+                response.sendRedirect("/board/list");
+            }
         };
     }
 }

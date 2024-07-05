@@ -16,4 +16,6 @@ public interface UsersMapper {
 
     // 회원의 정보나 로그인 시간을 수정하는 update
     void updateUser(UsersVO vo);
+
+    void insertNewUser(UsersVO vo);
 }

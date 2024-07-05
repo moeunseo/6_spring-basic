@@ -31,4 +31,4 @@ develop --> 여러분들 개인의 작업물을 저장할 원격 저장소 브�
 9. git pull origin main
 10. git checkout develop
 11. git merge main
-12. git pull origin develop
+12. git push origin develop

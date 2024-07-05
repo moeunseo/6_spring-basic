@@ -33,7 +33,7 @@
         <div class="mb-3">
             <div class="form-label">내용</div>
             <label>
-                <textarea class="form-control" rows="6" readonly th:text="*{boardContent}">본문</textarea>
+                <div class="form-control" th:utext="*{boardContent}">본문</div>
             </label>
         </div>
         <div class="mb-3">
